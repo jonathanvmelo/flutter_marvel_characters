@@ -9,7 +9,7 @@ import 'package:dio/dio.dart';
 class CharactersRemoteDatasourceImpl implements CharactersRemoteDatasource {
   final Dio dio;
 
-  CharactersRemoteDatasourceImpl(this.dio);
+  CharactersRemoteDatasourceImpl({required this.dio});
 
   @override
   Future<List<CharactersModel>> fetchCharacters() async {
