@@ -1,12 +1,8 @@
 import 'package:marvel_characters/src/modules/characters/domain/entities/character_entity.dart';
 
 class CharacterDetailsEntity extends CharacterEntity {
-  final List<ComicItem> comics;
-  final List<SeriesItem> series;
-  final List<StoryItem> stories;
-  final List<EventItem> events;
-  final String modified;
-  final String resourceURI;
+  final String biography; 
+  final String fullDescription; 
 
   const CharacterDetailsEntity({
     required super.id,
@@ -17,39 +13,26 @@ class CharacterDetailsEntity extends CharacterEntity {
     required super.seriesCount,
     required super.storiesCount,
     required super.eventsCount,
-    required this.comics,
-    required this.series,
-    required this.stories,
-    required this.events,
-    required this.modified,
-    required this.resourceURI,
+    required this.biography,
+    this.fullDescription = '',
   });
-}
 
-class ComicItem {
-  final String resourceURI;
-  final String name;
-
-  const ComicItem({required this.resourceURI, required this.name});
-}
-
-class SeriesItem {
-  final String resourceURI;
-  final String name;
-
-  const SeriesItem({required this.resourceURI, required this.name});
-}
-
-class StoryItem {
-  final String resourceURI;
-  final String name;
-
-  const StoryItem({required this.resourceURI, required this.name});
-}
-
-class EventItem {
-  final String resourceURI;
-  final String name;
-
-  const EventItem({required this.resourceURI, required this.name});
+  factory CharacterDetailsEntity.fromCharacter({
+    required CharacterEntity character,
+    required String biography,
+    String fullDescription = '',
+  }) {
+    return CharacterDetailsEntity(
+      id: character.id,
+      name: character.name,
+      description: character.description,
+      imageUrl: character.imageUrl,
+      comicsCount: character.comicsCount,
+      seriesCount: character.seriesCount,
+      storiesCount: character.storiesCount,
+      eventsCount: character.eventsCount,
+      biography: biography,
+      fullDescription: fullDescription,
+    );
+  }
 }
