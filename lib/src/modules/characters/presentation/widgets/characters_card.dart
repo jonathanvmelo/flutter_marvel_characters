@@ -54,17 +54,9 @@ class CharacterCard extends StatelessWidget {
                       fontSize: 16,
                     ),
                     maxLines: 1,
-                    // overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 4),
-                  // Text(
-                  //   '${character.comicsCount} comics',
-                  //   style: const TextStyle(
-                  //     color: Colors.grey,
-                  //     fontSize: 12,
-                  //   ),
-                  // ),
                 ],
               ),
             ),

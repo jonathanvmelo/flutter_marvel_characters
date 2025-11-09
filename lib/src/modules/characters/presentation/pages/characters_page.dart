@@ -97,7 +97,7 @@ class CharactersPage extends StatelessWidget {
       },
       child: CustomScrollView(
         slivers: [
-          _buildAppBar(),
+          _buildAppBar(context),
           _buildFeaturedSection(featuredCharacters),
           _buildCharactersListSection(context, filteredCharacters),
           if (isRefreshing) _buildLoadingIndicator(),
@@ -107,20 +107,24 @@ class CharactersPage extends StatelessWidget {
     );
   }
 
-  SliverAppBar _buildAppBar() {
+  SliverAppBar _buildAppBar(BuildContext context) {
+    const Color appBarDarkColor = Color(0xFF1F1F1F);
+
     return SliverAppBar(
-      backgroundColor: const Color.fromARGB(255, 39, 39, 39),
+      backgroundColor: appBarDarkColor,
+
+      foregroundColor: Theme.of(context).colorScheme.onPrimary,
+
       expandedHeight: 120,
       floating: true,
       pinned: true,
       flexibleSpace: FlexibleSpaceBar(
         centerTitle: true,
         title: Image.asset(
-          'assets/images/marvel-logo.png',
+          'assets/images/marvel-logo.png', 
           height: 40,
           fit: BoxFit.contain,
         ),
-        background: Container(color: const Color.fromARGB(255, 29, 29, 29)),
       ),
     );
   }

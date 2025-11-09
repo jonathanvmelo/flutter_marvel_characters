@@ -12,14 +12,14 @@ class CustomSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ColorScheme colorScheme = Theme.of(context).colorScheme;
     return TextField(
-      style: const TextStyle(color: Colors.black87),
+      style: TextStyle(color: colorScheme.onBackground),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: const TextStyle(color: Colors.grey),
-        prefixIcon: const Icon(Icons.search, color: Colors.grey),
-        border: const UnderlineInputBorder(),
-        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+        prefixIcon:
+            Icon(Icons.search, color: colorScheme.onBackground.withOpacity(0.7)),
+        contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
       ),
       onChanged: onChanged,
     );
