@@ -1,6 +1,5 @@
 part of 'characters_bloc.dart';
 
-
 sealed class CharacterEvent {
   const CharacterEvent();
 }
@@ -15,4 +14,10 @@ class RefreshCharactersEvent extends CharacterEvent {
 
 class ClearRefreshErrorEvent extends CharacterEvent {
   const ClearRefreshErrorEvent();
+}
+
+class FilterCharacterEvent extends CharacterEvent {
+  final String value;
+
+  FilterCharacterEvent(this.value);
 }

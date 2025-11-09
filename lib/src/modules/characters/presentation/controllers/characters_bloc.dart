@@ -14,6 +14,7 @@ class CharactersBloc extends Bloc<CharacterEvent, CharactersState> {
     on<FetchCharactersEvent>(_onFetchCharacters);
     on<RefreshCharactersEvent>(_onRefreshCharacters);
     on<ClearRefreshErrorEvent>(_onClearRefreshError);
+    on<FilterCharacterEvent>(_filterCharacter);
   }
 
   Future<void> _onFetchCharacters(
@@ -26,7 +27,11 @@ class CharactersBloc extends Bloc<CharacterEvent, CharactersState> {
 
     result.when(
       success: (characters) {
-        emit(CharacterLoaded(characters));
+        emit(CharactersLoaded(
+          characters: characters,
+          filteredCharacters: characters,
+          searchQuery: '',
+        ));
       },
       failure: (error) {
         emit(CharacterError(error.message));
@@ -40,40 +45,42 @@ class CharactersBloc extends Bloc<CharacterEvent, CharactersState> {
   ) async {
     final currentState = state;
 
-    if (currentState is! CharacterLoaded &&
-        currentState is! CharacterRefreshing &&
-        currentState is! CharacterRefreshFailure) {
+    if (currentState is! CharactersLoaded) {
       return;
     }
 
-    List<CharacterEntity> currentCharacters;
-
-    if (currentState is CharacterLoaded) {
-      currentCharacters = currentState.characters;
-    } else if (currentState is CharacterRefreshing) {
-      currentCharacters = currentState.currentCharacters;
-    } else if (currentState is CharacterRefreshFailure) {
-      currentCharacters = currentState.currentCharacters;
-    } else {
-      return;
-    }
-
-    emit(CharacterRefreshing(currentCharacters));
+    emit(CharacterRefreshing(currentState.characters));
 
     final result = await getCharactersUsecase.call(NoParams());
 
     result.when(
       success: (characters) {
-        emit(CharacterRefreshSuccess(characters));
+        // Aplica o filtro atual aos novos dados
+        final currentSearchQuery = currentState.searchQuery;
+        List<CharacterEntity> filteredCharacters;
 
-        Future.delayed(const Duration(milliseconds: 100), () {
-          if (!isClosed) {
-            emit(CharacterLoaded(characters));
-          }
-        });
+        if (currentSearchQuery.isEmpty) {
+          filteredCharacters = characters;
+        } else {
+          filteredCharacters = characters.where((character) {
+            return character.name.toLowerCase().contains(currentSearchQuery);
+          }).toList();
+        }
+
+        emit(CharactersLoaded(
+          characters: characters,
+          filteredCharacters: filteredCharacters,
+          searchQuery: currentSearchQuery,
+        ));
       },
       failure: (error) {
-        emit(CharacterRefreshFailure(currentCharacters, error.message));
+        emit(CharacterRefreshFailure(currentState.characters, error.message));
+
+        Future.delayed(const Duration(seconds: 3), () {
+          if (!isClosed && state is CharacterRefreshFailure) {
+            add(const ClearRefreshErrorEvent());
+          }
+        });
       },
     );
   }
@@ -84,7 +91,36 @@ class CharactersBloc extends Bloc<CharacterEvent, CharactersState> {
   ) {
     if (state is CharacterRefreshFailure) {
       final currentState = state as CharacterRefreshFailure;
-      emit(CharacterLoaded(currentState.currentCharacters));
+      emit(CharactersLoaded(characters: currentState.currentCharacters));
     }
+  }
+
+  void _filterCharacter(
+    FilterCharacterEvent event,
+    Emitter<CharactersState> emit,
+  ) async {
+    final currentState = state;
+
+    if (currentState is! CharactersLoaded) {
+      return;
+    }
+    final searchQuery = event.value.trim().toLowerCase();
+
+    if (searchQuery.isEmpty) {
+      emit(currentState.copyWith(
+        filteredCharacters: currentState.characters,
+        searchQuery: '',
+      ));
+      return;
+    }
+
+    final filteredCharacters = currentState.characters.where((character) {
+      return character.name.toLowerCase().contains(searchQuery);
+    }).toList();
+
+    emit(currentState.copyWith(
+      filteredCharacters: filteredCharacters,
+      searchQuery: searchQuery,
+    ));
   }
 }
