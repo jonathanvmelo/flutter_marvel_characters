@@ -5,12 +5,15 @@ import 'package:flutter_marvel_characters/src/modules/characters/data/models/cha
 
 class LocalCharacterDetailsDatasourceImpl
     implements LocalCharacterDetailsDatasource {
+  final AssetBundle assetBundle;
+
+  LocalCharacterDetailsDatasourceImpl({required this.assetBundle});
   @override
   Future<CharactersDetailsModel> getCharacterDetails(int id) async {
     final String response =
-        await rootBundle.loadString('assets/json/characters.json');
+        await assetBundle.loadString('assets/json/characters.json');
     final Map<String, dynamic> data = json.decode(response);
- 
+
     final characterData = _findCharacterById(data, id);
 
     if (characterData != null) {

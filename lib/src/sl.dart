@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/data/datasources/local/local_character_details_datasource.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/data/datasources/local/local_character_details_datasource_impl.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/data/datasources/local/local_characters_datasource.dart';
@@ -27,10 +28,10 @@ Future<void> initServiceLocator() async {
       () => CharacterDetailsRepositoryImpl(localDatasource: sl()));
   // DataSource
   sl.registerLazySingleton<LocalCharactersDatasource>(
-      () => LocalCharactersDatasourceImpl());
+      () => LocalCharactersDatasourceImpl(assetBundle: rootBundle));
 
   sl.registerLazySingleton<LocalCharacterDetailsDatasource>(
-      () => LocalCharacterDetailsDatasourceImpl());
+      () => LocalCharacterDetailsDatasourceImpl(assetBundle: rootBundle));
 
   // Bloc
   sl.registerFactory<CharactersBloc>(
