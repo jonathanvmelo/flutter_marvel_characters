@@ -1,5 +1,6 @@
-import 'package:marvel_characters/src/core/errors/failures.dart';
-import 'package:marvel_characters/src/core/utils/result.dart';
+
+import 'package:flutter_marvel_characters/src/core/errors/failures.dart';
+import 'package:flutter_marvel_characters/src/core/utils/result.dart';
 
 abstract class Usecase<Type, Params> {
   Future<Result<Type, Failure>> call(Params params);
