@@ -4,12 +4,11 @@ import 'package:flutter_marvel_characters/src/modules/characters/data/datasource
 import 'package:flutter_marvel_characters/src/modules/characters/data/repositories/characters_repository_impl.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/domain/repositories/character_repository.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/domain/usecases/get_characters_usecase.dart';
-import 'package:flutter_marvel_characters/src/modules/characters/presentation/controllers/characters_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 final sl = GetIt.instance;
 
-Future<void> init() async {
+Future<void> initServiceLocator() async {
   // UseCase
   sl.registerLazySingleton(() => GetCharactersUsecase(repository: sl()));
 
@@ -19,9 +18,7 @@ Future<void> init() async {
   // DataSource
   sl.registerLazySingleton<CharactersRemoteDatasource>(
       () => CharactersRemoteDatasourceImpl(dio: sl()));
-  // Blocs
-  sl.registerFactory(() => CharactersBloc(getCharactersUsecase: sl()));
-
+ 
   // Dio
-  sl.registerFactory(() => Dio(BaseOptions(baseUrl: 'gateway.marvel.com')));
+  sl.registerLazySingleton(() => Dio(BaseOptions(baseUrl: 'https://gateway.marvel.com')));
 }
