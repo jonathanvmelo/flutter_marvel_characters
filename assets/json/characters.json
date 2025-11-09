@@ -1,4 +1,3 @@
-
 {
   "code": 200,
   "status": "Ok",
@@ -16,6 +15,7 @@
         "id": 1009610,
         "name": "Spider-Man",
         "description": "Bitten by a radioactive spider, Peter Parker's arachnid abilities gave him superhuman strength, agility, and reflexes. He uses his powers to protect New York City as the friendly neighborhood Spider-Man.",
+        "biography": "Peter Parker was orphaned as a child and raised by his Uncle Ben and Aunt May in Queens, New York. A brilliant but socially awkward high school student, Peter was bitten by a radioactive spider during a science demonstration, granting him superhuman abilities. Initially using his powers for personal gain, Peter learned a tragic lesson when his uncle was murdered by a criminal he could have stopped. Embracing his uncle's mantra that 'with great power comes great responsibility,' Peter became Spider-Man, balancing his crime-fighting duties with the challenges of everyday life as a student, photographer, and scientist.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009610",
         "thumbnail": {
@@ -61,6 +61,7 @@
         "id": 1009664,
         "name": "Thor",
         "description": "As the Norse God of thunder and lightning, Thor wields one of the greatest weapons ever made, the enchanted hammer Mjolnir. While others have described Thor as an over-muscled, oafish imbecile, he's quite smart and compassionate.",
+        "biography": "Thor Odinson is the crown prince of Asgard, the realm of the Norse gods. Son of Odin, the All-Father, and Gaea, the Elder Earth-Goddess, Thor was raised alongside his adopted brother Loki. As the God of Thunder, Thor commands the storm and wields Mjolnir, a mystical hammer that can control weather and only be lifted by those who are worthy. After being banished to Earth by his father to learn humility, Thor developed a deep affection for humanity and became one of Earth's mightiest defenders. He has served as a founding member of the Avengers while continuing to protect the Nine Realms as their future king.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009664",
         "thumbnail": {
@@ -106,6 +107,7 @@
         "id": 1009220,
         "name": "Captain America",
         "description": "Vowing to serve his country any way he could, young Steve Rogers took the super soldier serum to become America's one-man army. Fighting for the red, white and blue for over 60 years, Captain America is the living, breathing symbol of freedom and liberty.",
+        "biography": "During the dark days of World War II, frail Steve Rogers volunteered for Project: Rebirth, a secret military operation to create super-soldiers. Injected with the Super-Soldier Serum and exposed to Vita-Rays, Rogers was transformed into the peak of human physical perfection. As Captain America, clad in red, white, and blue, he became the living symbol of American freedom. After being frozen in ice for decades, Rogers was revived in the modern age where he continues to fight for liberty and justice as a cornerstone of the Avengers. His unshakable moral compass, tactical genius, and mastery of combat make him one of the world's most respected heroes.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009220",
         "thumbnail": {
@@ -151,6 +153,7 @@
         "id": 1009368,
         "name": "Iron Man",
         "description": "Wounded, captured and forced to build a weapon by his enemies, billionaire industrialist Tony Stark instead created an advanced suit of armor to save his life and escape captivity. Now with a new outlook on life, Tony uses his money and intelligence to make the world a safer, better place as Iron Man.",
+        "biography": "Genius inventor Tony Stark inherited Stark Industries from his father, becoming one of the world's wealthiest and most brilliant industrialists. While demonstrating weapons in a war zone, Stark was critically injured by one of his own company's landmines and captured by terrorists. Forced to build a devastating weapon, Stark instead created a powered suit of armor to save his life and escape. Returning home, he refined the armor into the Iron Man suit and vowed to use his technological prowess to protect the world. Despite his playboy exterior and struggles with personal demons, Stark's intellect and courage have made him a central figure in the Avengers and a driving force in technological advancement for global security.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009368",
         "thumbnail": {
@@ -196,6 +199,7 @@
         "id": 1009189,
         "name": "Black Widow",
         "description": "Natasha Romanova, known by many aliases, is an expert spy, athlete, and assassin. Trained at a young age by the KGB's infamous Red Room Academy, the Black Widow was formerly an enemy to the Avengers.",
+        "biography": "Natasha Romanoff's early life remains shrouded in mystery, though it's known she was orphaned as a child in Stalingrad and rescued by a soldier named Ivan Petrovitch. She was recruited into the KGB's Black Widow Program and trained at the infamous Red Room Academy, where she underwent rigorous physical and psychological conditioning. Enhanced with a variant of the Super-Soldier serum, Natasha gained peak human abilities and slowed aging. After years as a Soviet operative, she defected to S.H.I.E.L.D., becoming one of their most valuable agents. Her mastery of martial arts, espionage, and marksmanship, combined with her complex moral journey from assassin to Avenger, makes her one of the most formidable and intriguing heroes in the world.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009189",
         "thumbnail": {
@@ -241,6 +245,7 @@
         "id": 1009351,
         "name": "Hulk",
         "description": "Caught in a gamma bomb explosion while trying to save the life of a teenager, Dr. Bruce Banner was transformed into the incredibly powerful creature called the Hulk.",
+        "biography": "Dr. Bruce Banner was a brilliant nuclear physicist working on gamma radiation research for the U.S. government. When a teenage boy wandered onto the testing range during a gamma bomb demonstration, Banner rushed to save him, absorbing a massive dose of gamma radiation. This exposure triggered a dramatic physical transformation, turning the mild-mannered scientist into the incredible Hulk - a giant, green-skinned being of immense strength and rage. The Hulk represents Banner's repressed anger and childhood trauma, creating a complex dual identity. Despite the destruction caused by his transformations, Banner has repeatedly used the Hulk's power to save the world, serving as both a founding Avenger and one of Earth's most powerful defenders.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009351",
         "thumbnail": {
@@ -286,6 +291,7 @@
         "id": 1009187,
         "name": "Black Panther",
         "description": "T'Challa is the Black Panther, king of Wakanda, one of the most technologically advanced nations on Earth. He is among the top intellects and martial artists of the world.",
+        "biography": "T'Challa is the king of Wakanda, a hidden African nation that possesses the world's most advanced technology due to its vast Vibranium deposits. As the Black Panther, T'Challa is both the political leader and spiritual protector of his people. The title of Black Panther is ceremonial, passed down through generations, with each new Panther gaining enhanced abilities by consuming the Heart-Shaped Herb. T'Challa combines a brilliant scientific mind with peak physical conditioning and mastery of martial arts. After opening Wakanda to the world, he has served as both a national leader and an Avenger, balancing his duties to his people with his responsibilities to global security. His wisdom, technology, and combat skills make him one of Earth's most formidable heroes.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009187",
         "thumbnail": {
@@ -331,6 +337,7 @@
         "id": 1009697,
         "name": "Wolverine",
         "description": "Born with super-human senses and the power to heal from almost any wound, Wolverine was captured by a secret Canadian organization and given an unbreakable skeleton and claws.",
+        "biography": "James Howlett, later known as Logan and Wolverine, was born in the late 19th century with a unique mutation that granted him accelerated healing, enhanced senses, and bone claws. After a traumatic childhood incident where his powers first manifested, he lived for decades as a wandering warrior, soldier, and adventurer. During World War II, he was captured by the Canadian government's Weapon X program, which bonded the indestructible metal Adamantium to his skeleton. With his memories erased and turned into a living weapon, Wolverine eventually broke free and began a long journey of rediscovery. His gruff exterior hides a complex moral code and fierce loyalty to those he cares about. As a member of the X-Men and occasional Avenger, his centuries of combat experience and unbreakable determination make him one of the world's most formidable fighters.",
         "modified": "2024-01-15T12:00:00-0500",
         "resourceURI": "http://gateway.marvel.com/v1/public/characters/1009697",
         "thumbnail": {
