@@ -14,13 +14,32 @@ class CharacterLoading extends CharactersState {
   const CharacterLoading();
 }
 
-class CharacterLoaded extends CharactersState {
+class CharactersLoaded extends CharactersState {
   final List<CharacterEntity> characters;
+  final List<CharacterEntity> filteredCharacters;
+  final String searchQuery;
 
-  const CharacterLoaded(this.characters);
+  const CharactersLoaded({
+    required this.characters,
+    this.filteredCharacters = const [],
+    this.searchQuery = '',
+  });
+
+  // Método copyWith para imutabilidade
+  CharactersLoaded copyWith({
+    List<CharacterEntity>? characters,
+    List<CharacterEntity>? filteredCharacters,
+    String? searchQuery,
+  }) {
+    return CharactersLoaded(
+      characters: characters ?? this.characters,
+      filteredCharacters: filteredCharacters ?? this.filteredCharacters,
+      searchQuery: searchQuery ?? this.searchQuery,
+    );
+  }
 
   @override
-  List<Object?> get props => [characters];
+  List<Object?> get props => [characters, filteredCharacters, searchQuery];
 }
 
 class CharacterError extends CharactersState {

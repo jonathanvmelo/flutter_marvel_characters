@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/domain/entities/character_entity.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/presentation/controllers/characters_bloc.dart';
-import 'package:flutter_marvel_characters/src/modules/characters/presentation/widgets/characters_card.dart';
+import 'package:flutter_marvel_characters/src/modules/characters/presentation/widgets/featured_characters_section.dart';
+import 'package:flutter_marvel_characters/src/modules/characters/presentation/widgets/characters_grid_section.dart';
+import 'package:flutter_marvel_characters/src/shared/widgets/custom_loading_indicatos.dart';
+import 'package:flutter_marvel_characters/src/shared/widgets/custom_search_field.dart';
+import 'package:flutter_marvel_characters/src/shared/widgets/empty_state.dart';
+import 'package:flutter_marvel_characters/src/shared/widgets/error_widget.dart';
+import 'package:flutter_marvel_characters/src/shared/widgets/section_header.dart';
 
 class CharactersPage extends StatelessWidget {
   const CharactersPage({super.key});
@@ -10,27 +16,10 @@ class CharactersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<CharactersBloc, CharactersState>(
-      listener: (context, state) {
-        _handleStateChanges(context, state);
-      },
+      listener: _handleStateChanges,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Marvel Characters'),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.refresh),
-              onPressed: () {
-                context
-                    .read<CharactersBloc>()
-                    .add(const RefreshCharactersEvent());
-              },
-            ),
-          ],
-        ),
         body: BlocBuilder<CharactersBloc, CharactersState>(
-          builder: (context, state) {
-            return _buildBody(state);
-          },
+          builder: (context, state) => _buildBody(context, state),
         ),
       ),
     );
@@ -42,263 +31,170 @@ class CharactersPage extends StatelessWidget {
         SnackBar(
           content: Text('Refresh failed: ${state.errorMessage}'),
           backgroundColor: Colors.red,
-          action: SnackBarAction(
-            label: 'Dismiss',
-            onPressed: () {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              context
-                  .read<CharactersBloc>()
-                  .add(const ClearRefreshErrorEvent());
+        ),
+      );
+    }
+  }
+
+  Widget _buildBody(BuildContext context, CharactersState state) {
+    return switch (state) {
+      CharacterInitial() => _buildInitialContent(),
+      CharacterLoading() => const CustomLoadingIndicator(),
+      CharactersLoaded(:final filteredCharacters, :final characters) =>
+        _buildMainContent(
+          context,
+          allCharacters: characters,
+          filteredCharacters: filteredCharacters,
+        ),
+      CharacterRefreshing(:final currentCharacters) => _buildMainContent(
+          context,
+          allCharacters: currentCharacters,
+          filteredCharacters: currentCharacters,
+          isRefreshing: true,
+        ),
+      CharacterRefreshSuccess(:final characters) => _buildMainContent(
+          context,
+          allCharacters: characters,
+          filteredCharacters: characters,
+        ),
+      CharacterRefreshFailure(:final currentCharacters, :final errorMessage) =>
+        _buildMainContent(
+          context,
+          allCharacters: currentCharacters,
+          filteredCharacters: currentCharacters,
+          showError: true,
+          errorMessage: errorMessage,
+        ),
+      CharacterError(:final message) => CustomErrorWidget(
+          message: message,
+          onRetry: () =>
+              context.read<CharactersBloc>().add(const FetchCharactersEvent()),
+        ),
+    };
+  }
+
+  Widget _buildInitialContent() {
+    return const EmptyStateWidget(
+      icon: Icons.people,
+      message: 'Pull down to load characters',
+    );
+  }
+
+  Widget _buildMainContent(
+    BuildContext context, {
+    required List<CharacterEntity> allCharacters,
+    required List<CharacterEntity> filteredCharacters,
+    bool isRefreshing = false,
+    bool showError = false,
+    String errorMessage = '',
+  }) {
+    final featuredCharacters = allCharacters.take(3).toList();
+
+    return RefreshIndicator(
+      color: Colors.red,
+      onRefresh: () async {
+        context.read<CharactersBloc>().add(const RefreshCharactersEvent());
+      },
+      child: CustomScrollView(
+        slivers: [
+          _buildAppBar(),
+          _buildFeaturedSection(featuredCharacters),
+          _buildCharactersListSection(context, filteredCharacters),
+          if (isRefreshing) _buildLoadingIndicator(),
+          if (showError) _buildErrorBanner(context, errorMessage),
+        ],
+      ),
+    );
+  }
+
+  SliverAppBar _buildAppBar() {
+    return SliverAppBar(
+      backgroundColor: const Color.fromARGB(255, 39, 39, 39),
+      expandedHeight: 120,
+      floating: true,
+      pinned: true,
+      flexibleSpace: FlexibleSpaceBar(
+        centerTitle: true,
+        title: Image.asset(
+          'assets/images/marvel-logo.png',
+          height: 40,
+          fit: BoxFit.contain,
+        ),
+        background: Container(color: const Color.fromARGB(255, 29, 29, 29)),
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _buildFeaturedSection(List<CharacterEntity> characters) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 24, bottom: 24),
+        child: FeaturedCharactersSection(featuredCharacters: characters),
+      ),
+    );
+  }
+
+  SliverList _buildCharactersListSection(
+    BuildContext context,
+    List<CharacterEntity> characters,
+  ) {
+    return SliverList(
+      delegate: SliverChildListDelegate([
+        SectionHeader(
+          title: 'MARVEL CHARACTERS LIST',
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: CustomSearchField(
+            onChanged: (value) {
+              context.read<CharactersBloc>().add(FilterCharacterEvent(value));
             },
           ),
         ),
-      );
-    }
-
-    if (state is CharacterRefreshSuccess) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Characters updated successfully!'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
-  }
-
-  Widget _buildBody(CharactersState state) {
-    return switch (state) {
-      CharacterInitial() => const _InitialWidget(),
-      CharacterLoading() => const _LoadingWidget(),
-      CharacterLoaded(:final characters) =>
-        _RefreshableCharactersList(characters: characters, isRefreshing: false),
-      CharacterRefreshing(:final currentCharacters) =>
-        _RefreshableCharactersList(
-            characters: currentCharacters, isRefreshing: true),
-      CharacterRefreshSuccess(:final characters) =>
-        _RefreshableCharactersList(characters: characters, isRefreshing: false),
-      CharacterRefreshFailure(:final currentCharacters, :final errorMessage) =>
-        _RefreshableCharactersListWithError(
-          characters: currentCharacters,
-          errorMessage: errorMessage,
-        ),
-      CharacterError(:final message) => _ErrorWidget(message: message),
-    };
-  }
-}
-
-// ✅ WIDGETS QUE ESTAVAM FALTANDO
-
-class _InitialWidget extends StatelessWidget {
-  const _InitialWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.people, size: 64, color: Colors.grey),
-          SizedBox(height: 16),
-          Text(
-            'Welcome to Marvel Characters',
-            style: TextStyle(fontSize: 18, color: Colors.grey),
-          ),
-          SizedBox(height: 8),
-          Text(
-            'Pull down to load characters',
-            style: TextStyle(color: Colors.grey),
-          ),
-        ],
-      ),
+        if (characters.isEmpty)
+          const EmptyStateWidget()
+        else
+          CharactersGridSection(characters: characters),
+      ]),
     );
   }
-}
 
-class _LoadingWidget extends StatelessWidget {
-  const _LoadingWidget();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: 16),
-          Text('Loading characters...'),
-        ],
-      ),
-    );
-  }
-}
-
-class _ErrorWidget extends StatelessWidget {
-  final String message;
-
-  const _ErrorWidget({required this.message});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
+  SliverToBoxAdapter _buildLoadingIndicator() {
+    return const SliverToBoxAdapter(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        padding: EdgeInsets.all(16.0),
+        child: CustomLoadingIndicator(),
+      ),
+    );
+  }
+
+  SliverToBoxAdapter _buildErrorBanner(
+      BuildContext context, String errorMessage) {
+    return SliverToBoxAdapter(
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(12),
+        color: Colors.red[900],
+        child: Row(
           children: [
-            const Icon(Icons.error_outline, size: 64, color: Colors.red),
-            const SizedBox(height: 16),
-            const Text(
-              'Failed to load characters',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            const Icon(Icons.error_outline, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                'Refresh failed: $errorMessage',
+                style: const TextStyle(color: Colors.white, fontSize: 14),
+              ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
+            IconButton(
+              icon: const Icon(Icons.close, size: 20, color: Colors.white),
               onPressed: () {
                 context
                     .read<CharactersBloc>()
-                    .add(const FetchCharactersEvent());
+                    .add(const ClearRefreshErrorEvent());
               },
-              child: const Text('Try Again'),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _RefreshableCharactersList extends StatelessWidget {
-  final List<CharacterEntity> characters;
-  final bool isRefreshing;
-
-  const _RefreshableCharactersList({
-    required this.characters,
-    required this.isRefreshing,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<CharactersBloc>().add(const RefreshCharactersEvent());
-        await Future.delayed(const Duration(milliseconds: 1000));
-      },
-      child: Stack(
-        children: [
-          if (characters.isEmpty)
-            const SingleChildScrollView(
-              physics: AlwaysScrollableScrollPhysics(),
-              child: Center(
-                heightFactor: 15,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.search_off, size: 64, color: Colors.grey),
-                    SizedBox(height: 16),
-                    Text('No characters found'),
-                  ],
-                ),
-              ),
-            )
-          else
-            ListView.builder(
-              physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: characters.length,
-              itemBuilder: (context, index) {
-                final character = characters[index];
-                return CharacterCard(character: character);
-              },
-            ),
-          if (isRefreshing)
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: LinearProgressIndicator(),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _RefreshableCharactersListWithError extends StatelessWidget {
-  final List<CharacterEntity> characters;
-  final String errorMessage;
-
-  const _RefreshableCharactersListWithError({
-    required this.characters,
-    required this.errorMessage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        context.read<CharactersBloc>().add(const RefreshCharactersEvent());
-        await Future.delayed(const Duration(milliseconds: 1000));
-      },
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(12),
-              color: Colors.red[100],
-              child: Row(
-                children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 20),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Refresh failed: $errorMessage',
-                      style: const TextStyle(color: Colors.red, fontSize: 14),
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.close, size: 20),
-                    onPressed: () {
-                      context
-                          .read<CharactersBloc>()
-                          .add(const ClearRefreshErrorEvent());
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-          if (characters.isEmpty)
-            const SliverFillRemaining(
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.search_off, size: 64, color: Colors.grey),
-                    SizedBox(height: 16),
-                    Text('No characters found'),
-                  ],
-                ),
-              ),
-            )
-          else
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final character = characters[index];
-                  return CharacterCard(character: character);
-                },
-                childCount: characters.length,
-              ),
-            ),
-        ],
       ),
     );
   }
