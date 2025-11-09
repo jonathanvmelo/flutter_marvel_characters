@@ -1,3 +1,4 @@
+
 import 'package:flutter_marvel_characters/src/modules/characters/domain/entities/character_entity.dart';
 
 class CharactersModel extends CharacterEntity {

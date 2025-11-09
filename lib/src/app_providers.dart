@@ -3,5 +3,5 @@ import 'package:flutter_marvel_characters/src/modules/characters/presentation/co
 import 'package:flutter_marvel_characters/src/sl.dart';
 
 final appProviders = [
-  BlocProvider(create: (_) => CharactersBloc(getCharactersUsecase: sl())..add(FetchCharactersEvent() ))
+  BlocProvider(create: (_) => CharactersBloc(getCharactersUsecase: sl())..add(FetchCharactersEvent()))
 ];

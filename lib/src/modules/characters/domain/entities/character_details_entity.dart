@@ -1,4 +1,4 @@
-import 'package:marvel_characters/src/modules/characters/domain/entities/character_entity.dart';
+import 'package:flutter_marvel_characters/src/modules/characters/domain/entities/character_entity.dart';
 
 class CharacterDetailsEntity extends CharacterEntity {
   final String biography; 
