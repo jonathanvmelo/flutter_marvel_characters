@@ -11,7 +11,6 @@ class LocalCharacterDetailsDatasourceImpl
         await rootBundle.loadString('assets/json/characters.json');
     final Map<String, dynamic> data = json.decode(response);
  
-    // Encontra o personagem específico pelo ID
     final characterData = _findCharacterById(data, id);
 
     if (characterData != null) {

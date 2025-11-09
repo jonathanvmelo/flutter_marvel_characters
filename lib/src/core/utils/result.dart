@@ -5,7 +5,7 @@ class Result<S, F> {
   const Result._({this.data, this.error});
 
   bool get isSuccess => data != null;
-
+  bool get isFailure => error != null;
   factory Result.success(S data) => Result._(data: data);
   factory Result.failure(F error) => Result._(error: error);
 
