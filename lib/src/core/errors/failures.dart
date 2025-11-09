@@ -1,0 +1,23 @@
+abstract class Failure {
+  final String message;
+  final StackTrace? stackTrace;
+
+  const Failure(this.message, [this.stackTrace]);
+  
+  @override
+  String toString() => message;
+}
+
+
+class ServerFailure extends Failure {
+  const ServerFailure(super.message, [super.stackTrace]);
+}
+
+
+class NetworkFailure extends Failure {
+  const NetworkFailure(super.message, [super.stackTrace]);
+}
+
+class CacheFailure extends Failure {
+  const CacheFailure(super.message, [super.stackTrace]);
+}
