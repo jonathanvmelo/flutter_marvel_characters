@@ -1,16 +1,48 @@
-# marvel_characters
+# Marvel Characters App
 
-A new Flutter project.
+Este projeto foi desenvolvido como parte de um desafio técnico.  
+O objetivo é criar um aplicativo mobile em Flutter que consuma a API da Marvel, liste personagens e exiba detalhes completos seguindo a interface proposta no Figma.
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Sobre o projeto
 
-A few resources to get you started if this is your first Flutter project:
+O app segue a arquitetura **Clean Architecture**, separando responsabilidades e permitindo fácil manutenção e testes.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Ao utilizar a aplicação, o usuário pode:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Buscar a lista de personagens  
+- Visualizar detalhes de um personagem  
+- Receber feedback de erros em chamadas da API
+
+---
+
+## 📦 Tecnologias utilizadas
+
+- **Flutter 3.32.2**
+- **Clean Architecture**
+- **Gerenciamento de estado:** Bloc 
+- **HTTP Client:** Dio 
+- **Testes unitários:** Mocktail
+
+As escolhas foram feitas para manter o código organizado, testável e alinhado com boas práticas do ecossistema Flutter.
+
+---
+
+## 📁 Como rodar o projeto
+
+1. Clone o repositório:
+   ```sh
+   git clone https://github.com/jonathanvmelo/flutter_marvel_characters.git
+
+2. Instale as dependências:
+    flutter pub get
+
+3. Gere sua própria API Key no site da Marvel:
+    [key](https://developer.marvel.com/?utm_source=chatgpt.com)
+
+4. Configure sua chave no projeto    
+    No arquivo .env, coloque a chave obtida no passo anterior
+
+5. Rode o app:
+    flutter run    

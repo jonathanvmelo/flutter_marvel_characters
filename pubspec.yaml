@@ -46,6 +46,7 @@ flutter:
   #   - assets/images
   #   - assets/json/characters.json
   assets:
+    - .env
     - assets/images/
     - assets/json/characters.json  
 
