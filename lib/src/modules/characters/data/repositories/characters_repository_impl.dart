@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter_marvel_characters/src/core/errors/failures.dart';
 import 'package:flutter_marvel_characters/src/core/utils/result.dart';
-import 'package:flutter_marvel_characters/src/modules/characters/data/datasources/characters_remote_datasource.dart';
+import 'package:flutter_marvel_characters/src/modules/characters/data/datasources/local/local_characters_datasource.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/domain/entities/character_entity.dart';
 import 'package:flutter_marvel_characters/src/modules/characters/domain/repositories/character_repository.dart';
 
 class CharactersRepositoryImpl implements CharacterRepository {
-  CharactersRemoteDatasource remoteDatasource;
+  LocalCharactersDatasource remoteDatasource;
   CharactersRepositoryImpl({
     required this.remoteDatasource,
   });
