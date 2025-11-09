@@ -16,7 +16,9 @@ class CharactersRemoteDatasourceImpl implements CharactersRemoteDatasource {
     final jsonString =
         await rootBundle.loadString('assets/json/characters.json');
 
-    final List<dynamic> jsonList = json.decode(jsonString);
+    final Map<String, dynamic> jsonMap = json.decode(jsonString);
+
+    final List<dynamic> jsonList = jsonMap['data']['results'];
 
     return jsonList
         .map((jsonItem) => CharactersModel.fromJson(jsonItem))
